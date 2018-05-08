@@ -1,5 +1,8 @@
+
+#this module implements pseudo-random number generators for various distributions
 import random
 
+#dictionary with the difficulties, question and answers intented and classified by type
 data = {
     "easy": {
         "question" :  '''
@@ -30,16 +33,20 @@ data = {
     }
 }
 
+#the blanks to fill in question section with user_input, it has to match the answer section
 blanks_to_fill = ["__1__","__2__", "__3__", "__4__"]
 
+#title
 print ('''
 
 >>> WINOGRAD SCHEMAS CHALLENGE <<<
 
 ''')
 
+#number of lives wich the user will have in each challenge shorted by difficulty
 lives = int(input("How many lives do you want? "))
 
+#user chooses difficulty in order to start the challenge or press enter to end the module-challenge
 def level_choice():
     level = input("Choose difficulty: easy, medium, hard or nothing: ").lower()
     if level == "easy":
@@ -57,6 +64,13 @@ def level_choice():
     else:
         return "Well done anyways!"
 
+#this function uses the question answer choosen in the difficulty, and the lives in in (input)lives
+#index in 0 in order to keep track to know when are all the blanks filled correctly
+#if the user input is the same as the answer numered the blank numered will be replaced by it and the index will increase in one in order to pass to the next blank to filled
+#if the length of answer is the same as index means that there are no more blanks to fill, meaning the user has passed the test in the difficulty chossen
+#if not, the question with the blanks correctly anwsered having been substituted will be ran, and the user will be asked to write the blank again
+#if the lives are more than 1, if they're 1 the challenge ends printing "0 lives left"
+
 def challenge(question, answer, lives):
     index = 0
     while index < len(answer):
@@ -65,7 +79,7 @@ def challenge(question, answer, lives):
             question = question.replace(blanks_to_fill[index], answer[index])
             index += 1
             print (correct_guess(answer, question, index))
-        elif user_input != answer[index]:
+        else:
             if lives == 1:
                 print( "0 lives left!")
                 return level_choice()
@@ -73,6 +87,9 @@ def challenge(question, answer, lives):
                 lives -= 1
                 print( question)
 
+#function that runs in case of correct guess, if the length of the answer section is equal to the index having keep it in track:
+# means that the challenge is passed so before it ends it prints the question with the correct words for the blanks
+#if the length is not equal, it returns the next question
 def correct_guess(answer, question, index):
     if len(answer) == index:
         print ("\n" + question + "\n")
@@ -84,10 +101,8 @@ def correct_guess(answer, question, index):
             return "Don't forget to come back if you change your mind."
         else:
             return "Well done anyways!"
-    elif len(answer) != index:
+    else:
         print ("\n CORRECT. Running next:")
         return question
-    else:
-        return "Well done anyways!"
 
 print (level_choice())
